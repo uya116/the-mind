@@ -1,7 +1,7 @@
 <template>
   <div>
   <v-list three-line>
-    <template v-for="(comment, index) in rooms">
+    <template v-for="(comment, index) in submitted_cards">
       <v-list-item
           :key="index"
       >
@@ -14,11 +14,12 @@
       </v-list-item>
     </template>
   </v-list>
-  <v-btn rounded color="primary" dark @click="logoutRoom">退室する</v-btn>
   </div>
 </template>
 
 <script>
+import {db} from '../plugins/firebase';
+
 export default {
   name: 'SubmittedCards',
   data: () => ({
@@ -36,21 +37,20 @@ export default {
 
   methods: {
     getCards() {
-      db.collection('rooms').doc(room_id).collection('cards')
-        .where('submitted', '==', true)
-        .orderBy('id', 'desc')
-        .get()
-        .then(querySnapshot => {
-          const submittedCards = [];
-          querySnapshot.forEach(doc => {
-            const data = doc.data();
-            submittedCards.push(data);
-          });
-          this.submitted_cards = submittedCards;
-        })
-        .catch(error => {
-          process.stdout(error);
-        });
+      const querySnapshot = await getDocs(collection(db, "rooms"));
+      querySnapshot.forEach((doc) => {
+        console.log(`${doc.id} => ${doc.data()}`);
+      });
+      // const querySnapshot = await getDocs(collection(db, "rooms").doc(room_id).collection('cards')
+      //   // .where('submitted', '==', true)
+      //   // .orderBy('id', 'desc')
+      // );
+      // querySnapshot.forEach((doc) => {
+      //   console.log(`${doc.id} => ${doc.data()}`);
+      //   const data = doc.data();
+      //   submittedCards.push(data);
+      // });
+      // this.submitted_cards = submittedCards;
     },
   },
 }
