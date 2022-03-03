@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import {collection, getDocs} from "firebase/firestore";
 import {db} from '../plugins/firebase';
 
 export default {
@@ -27,17 +28,12 @@ export default {
   }),
 
   mounted() {
-    // const room_id = this.$route.params.id;
-    const roomId = 'dLgQh5FaRocuKWu0S9Ej';
-    db.collection('rooms').doc(roomId).collection('cards')
-      .onSnapshot(() => {
-        this.getCards();
-      });
+    this.getCards();
   },
 
   methods: {
-    getCards() {
-      const querySnapshot = await getDocs(collection(db, "rooms"));
+    async getCards() {
+      const querySnapshot = await getDocs(collection(db, 'rooms'));
       querySnapshot.forEach((doc) => {
         console.log(`${doc.id} => ${doc.data()}`);
       });
