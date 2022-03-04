@@ -7,9 +7,7 @@
       >
       <v-avatar
         color="teal"
-        rounded
         size="56"
-        tile
       ></v-avatar>
       </v-list-item>
     </template>
@@ -18,7 +16,7 @@
 </template>
 
 <script>
-import {collection, getDocs} from "firebase/firestore";
+import {query, collection, where, getDocs} from "firebase/firestore";
 import {db} from '../plugins/firebase';
 
 export default {
@@ -33,20 +31,14 @@ export default {
 
   methods: {
     async getCards() {
-      const querySnapshot = await getDocs(collection(db, 'rooms'));
+      const submittedCards = [];
+      const q = query(collection(db, 'rooms', 'dLgQh5FaRocuKWu0S9Ej', 'cards'), where("submitted", "==", true));
+      const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
-        console.log(`${doc.id} => ${doc.data()}`);
+        console.log(`${doc.id} => ${doc.data()}, ${doc.data().id}`);
+        submittedCards.push(doc.data().id);
       });
-      // const querySnapshot = await getDocs(collection(db, "rooms").doc(room_id).collection('cards')
-      //   // .where('submitted', '==', true)
-      //   // .orderBy('id', 'desc')
-      // );
-      // querySnapshot.forEach((doc) => {
-      //   console.log(`${doc.id} => ${doc.data()}`);
-      //   const data = doc.data();
-      //   submittedCards.push(data);
-      // });
-      // this.submitted_cards = submittedCards;
+      this.submitted_cards = submittedCards;
     },
   },
 }
