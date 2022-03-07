@@ -33,11 +33,11 @@ export default {
   methods: {
     async getCards() {
       const submittedCards = [];
-      const q = query(collection(db, 'rooms', 'dLgQh5FaRocuKWu0S9Ej', 'cards'), where("submitted", "==", true), orderBy("id"));
+      const q = query(collection(db, 'rooms', 'dLgQh5FaRocuKWu0S9Ej', 'cards'), where("submitted", "==", true));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         console.log(`${doc.id} => ${doc.data()}, ${doc.data().id}`);
-        submittedCards.push(doc.data().id);
+        submittedCards.push(doc.id);
       });
       this.submitted_cards = submittedCards;
     },
