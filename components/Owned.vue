@@ -48,9 +48,10 @@ export default {
     },
     async submit() {
       const roomId = 'dLgQh5FaRocuKWu0S9Ej';
-      const id = 46;
+      const id = '46';
       const d = doc(db, 'rooms', roomId, 'cards', id);
       await updateDoc(d, {submitted: true});
+      this.getCards();
     }
 },
 }

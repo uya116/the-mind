@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import {query, collection, where, orderBy, getDocs} from "firebase/firestore";
+import {query, collection, where, orderBy, getDocs, documentId} from "firebase/firestore";
 import {db} from '../plugins/firebase';
 
 export default {
@@ -33,7 +33,7 @@ export default {
   methods: {
     async getCards() {
       const submittedCards = [];
-      const q = query(collection(db, 'rooms', 'dLgQh5FaRocuKWu0S9Ej', 'cards'), where("submitted", "==", true));
+      const q = query(collection(db, 'rooms', 'dLgQh5FaRocuKWu0S9Ej', 'cards'), where("submitted", "==", true), orderBy("number"));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         console.log(`${doc.id} => ${doc.data()}, ${doc.data().id}`);
