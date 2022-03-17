@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import {query, collection, where, orderBy, getDocs, documentId} from "firebase/firestore";
+import {query, collection, where, orderBy, getDocs} from "firebase/firestore";
 import {db} from '../plugins/firebase';
 
 export default {
@@ -26,9 +26,13 @@ export default {
     submitted_cards: [],
   }),
 
-  mounted() {
-    this.getCards();
+  computed: {
+    ...mapGetters('submittedCount', ['submittedCount'])
   },
+
+  mounted() {
+      this.getCards();
+    },
 
   methods: {
     async getCards() {
@@ -39,7 +43,8 @@ export default {
         console.log(`${doc.id} => ${doc.data()}, ${doc.data().id}`);
         submittedCards.push(doc.id);
       });
-      this.submitted_cards = submittedCards;
+      this.$store.dispatch('updateSubmittedCards', {cards: submittedCards});
+      // this.submitted_cards = submittedCards;
     },
   },
 }
