@@ -1,17 +1,15 @@
 <template>
   <v-app>
     <v-container>
-      <Submitted/>
-      <Owned/>
+      <Cards/>
     </v-container>
   </v-app>
 </template>
 
 <script>
-import Submitted from '~/components/Submitted.vue'
-import Owned from '~/components/Owned.vue'
+import Cards from '~/components/Cards.vue'
 export default {
   name: 'IndexPage',
-  components: { Submitted, Owned },
+  components: { Cards },
 }
 </script>
